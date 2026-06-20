@@ -21,6 +21,9 @@ COPY backend/requirements.txt backend/requirements.txt
 RUN pip install --no-cache-dir -r backend/requirements.txt
 
 COPY backend/ backend/
+# Make the cache writable at runtime (HF Spaces / non-root) so terrain/weather
+# fetched on first request can be cached next to the shipped model files.
+RUN mkdir -p backend/cache && chmod -R 777 backend/cache
 COPY --from=fe /fe/dist frontend/dist
 
 EXPOSE 8000
