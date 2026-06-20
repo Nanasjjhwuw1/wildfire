@@ -59,25 +59,42 @@ def _tile_name(lon: float, lat: float) -> str:
 
 
 def _read_classes(grid: Grid) -> np.ndarray:
-    """Windowed, downsampled read of the WorldCover class raster onto the grid."""
+    """Windowed, downsampled read of WorldCover onto the grid.
+
+    WorldCover is tiled on a 3-degree grid; a bbox that spans more than one tile
+    (e.g. a whole province) is mosaicked by reading each intersecting tile's
+    window into the matching block of the output grid.
+    """
     import rasterio
     from rasterio.enums import Resampling
     from rasterio.windows import from_bounds
 
-    tile = _tile_name((grid.lon_min + grid.lon_max) / 2, (grid.lat_min + grid.lat_max) / 2)
-    url = f"{_S3_BASE}/ESA_WorldCover_10m_2021_v200_{tile}_Map.tif"
-
-    with rasterio.open(url) as ds:
-        window = from_bounds(
-            grid.lon_min, grid.lat_min, grid.lon_max, grid.lat_max, transform=ds.transform
-        )
-        classes = ds.read(
-            1,
-            window=window,
-            out_shape=(grid.n_rows, grid.n_cols),
-            resampling=Resampling.nearest,  # categorical -> nearest, never average
-        )
-    return classes.astype(np.int16)
+    classes = np.zeros(grid.shape, dtype=np.int16)
+    lat0, lat1, lon0, lon1 = grid.lat_min, grid.lat_max, grid.lon_min, grid.lon_max
+    for lat3 in range(int(math.floor(lat0 / 3) * 3), int(math.floor(lat1 / 3) * 3) + 3, 3):
+        for lon3 in range(int(math.floor(lon0 / 3) * 3), int(math.floor(lon1 / 3) * 3) + 3, 3):
+            slon0, slon1 = max(lon0, lon3), min(lon1, lon3 + 3)
+            slat0, slat1 = max(lat0, lat3), min(lat1, lat3 + 3)
+            if slon1 <= slon0 or slat1 <= slat0:
+                continue
+            ns, ew = ("N" if lat3 >= 0 else "S"), ("E" if lon3 >= 0 else "W")
+            tile = f"{ns}{abs(lat3):02d}{ew}{abs(lon3):03d}"
+            url = f"{_S3_BASE}/ESA_WorldCover_10m_2021_v200_{tile}_Map.tif"
+            r_a, c_l = grid.lonlat_to_rowcol(slon0, slat1)  # NW of sub-extent
+            r_b, c_r = grid.lonlat_to_rowcol(slon1, slat0)  # SE
+            r0, r1 = min(r_a, r_b), max(r_a, r_b) + 1
+            c0, c1 = min(c_l, c_r), max(c_l, c_r) + 1
+            if r1 <= r0 or c1 <= c0:
+                continue
+            try:
+                with rasterio.open(url) as ds:
+                    win = from_bounds(slon0, slat0, slon1, slat1, transform=ds.transform)
+                    data = ds.read(1, window=win, out_shape=(r1 - r0, c1 - c0),
+                                   resampling=Resampling.nearest)
+                    classes[r0:r1, c0:c1] = data.astype(np.int16)
+            except Exception:  # tile missing (ocean) / transient network — leave as 0
+                pass
+    return classes
 
 
 def get_fuel(grid: Grid, *, force_refresh: bool = False) -> dict:

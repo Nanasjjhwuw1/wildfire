@@ -1,63 +1,63 @@
 {
-  "fetched_at": 1781954731.0238912,
+  "fetched_at": 1781978573.6532578,
   "source": "open-meteo",
   "representative": {
-    "temp": 25.940000000000005,
-    "rh": 85.6,
-    "wind_speed": 0.66,
-    "wind_dir": 338.4,
-    "rain_24h": 4.24
+    "temp": 23.119999999999997,
+    "rh": 95.8,
+    "wind_speed": 0.75,
+    "wind_dir": 247.7,
+    "rain_24h": 7.8
   },
   "points": [
     {
-      "lat": 18.87522,
-      "lon": 98.85827,
-      "temp": 23.1,
-      "rh": 94,
-      "wind_speed": 0.22,
-      "wind_dir": 207,
+      "lat": 20.351492,
+      "lon": 97.9598,
+      "temp": 24.5,
+      "rh": 95,
+      "wind_speed": 1.45,
+      "wind_dir": 243,
       "precip_now": 0.0,
       "rain_24h": 5.6
     },
     {
+      "lat": 20.351492,
+      "lon": 99.407036,
+      "temp": 21.3,
+      "rh": 98,
+      "wind_speed": 0.2,
+      "wind_dir": 180,
+      "precip_now": 0.0,
+      "rain_24h": 7.6
+    },
+    {
+      "lat": 17.328646,
+      "lon": 97.976875,
+      "temp": 21.8,
+      "rh": 99,
+      "wind_speed": 1.17,
+      "wind_dir": 223,
+      "precip_now": 0.1,
+      "rain_24h": 14.3
+    },
+    {
+      "lat": 17.328646,
+      "lon": 99.45087,
+      "temp": 25.9,
+      "rh": 90,
+      "wind_speed": 1.07,
+      "wind_dir": 233,
+      "precip_now": 0.0,
+      "rain_24h": 4.2
+    },
+    {
       "lat": 18.80492,
-      "lon": 98.93805,
-      "temp": 28.1,
-      "rh": 79,
-      "wind_speed": 0.74,
-      "wind_dir": 20,
+      "lon": 98.67257,
+      "temp": 22.1,
+      "rh": 97,
+      "wind_speed": 1.07,
+      "wind_dir": 332,
       "precip_now": 0.0,
-      "rain_24h": 3.4
-    },
-    {
-      "lat": 18.734621,
-      "lon": 98.84086,
-      "temp": 26.1,
-      "rh": 88,
-      "wind_speed": 1.25,
-      "wind_dir": 331,
-      "precip_now": 0.0,
-      "rain_24h": 2.9000000000000004
-    },
-    {
-      "lat": 18.734621,
-      "lon": 98.92927,
-      "temp": 28.9,
-      "rh": 75,
-      "wind_speed": 1.23,
-      "wind_dir": 348,
-      "precip_now": 0.0,
-      "rain_24h": 4.7
-    },
-    {
-      "lat": 18.80492,
-      "lon": 98.849556,
-      "temp": 23.5,
-      "rh": 92,
-      "wind_speed": 0.56,
-      "wind_dir": 297,
-      "precip_now": 0.0,
-      "rain_24h": 4.6
+      "rain_24h": 7.3
     }
   ]
 }

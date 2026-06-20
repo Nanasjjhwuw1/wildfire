@@ -112,7 +112,7 @@ export default function App() {
           const [[s, w], [n, e]] = a.bounds
           const lat = (s + n) / 2, lon = (w + e) / 2
           setIgnition({ lat, lon })
-          runSimulation(lat, lon, { wind_speed: ws, wind_direction: wd, fuel_dryness: 0.9 })
+          runSimulation(lat, lon, { wind_speed: ws, wind_direction: wd, fuel_dryness: 0.9, n_runs: 15, n_steps: 45 })
         }
       } catch (e) {
         setError(`${t('loadFailed')}: ${e.message}`)
@@ -143,7 +143,7 @@ export default function App() {
         wind_direction: override.wind_direction ?? windDir,
         fuel_dryness: override.fuel_dryness ?? dryness,
         n_runs: override.n_runs ?? nRuns,
-        n_steps: 60,
+        n_steps: override.n_steps ?? 60,
       })
       setSim(res)
       setFrameIdx(res.frames.length - 1)

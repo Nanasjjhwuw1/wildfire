@@ -4,7 +4,7 @@
 // ---- static UI strings -----------------------------------------------------
 const STR = {
   appTitle: { th: 'ไฟป่า: ความเสี่ยง & การลาม', en: 'Wildfire Risk & Spread' },
-  area: { th: 'ดอยสุเทพ เชียงใหม่', en: 'Doi Suthep, Chiang Mai' },
+  area: { th: 'จังหวัดเชียงใหม่', en: 'Chiang Mai province' },
 
   stepWeather: { th: 'ปรับสภาพอากาศ', en: 'Set conditions' },
   stepIgnite: { th: 'แตะจุดบนแผนที่เพื่อจุดไฟ', en: 'Tap the map to start a fire' },
@@ -93,7 +93,7 @@ const STR = {
   riskLow: { th: 'น้อย', en: 'Low' },
   seeDetail: { th: 'ดูละเอียด', en: 'Details' },
   simpleBack: { th: 'โหมดง่าย', en: 'Simple' },
-  todayRisk: { th: 'วันนี้แถวนี้ เสี่ยงไฟ', en: 'Fire risk here today' },
+  todayRisk: { th: 'วันนี้เชียงใหม่ เสี่ยงไฟ', en: 'Chiang Mai fire risk today' },
   tapToSim: { th: '👉 แตะบนแผนที่ เพื่อดูว่าถ้าไฟเริ่มตรงนั้น จะลามไปทางไหน', en: '👉 Tap the map to see how a fire there would spread' },
   sendCrews: { th: 'ควรส่งทีมดับไฟ', en: 'Send crews to' },
   newFire: { th: 'ลองจุดใหม่', en: 'Try a new spot' },

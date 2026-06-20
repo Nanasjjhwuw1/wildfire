@@ -22,20 +22,25 @@ except Exception:  # pragma: no cover - dotenv not installed yet during Slice 1
 
 
 # --- study area ------------------------------------------------------------
-# Doi Suthep, Chiang Mai. (lon_min, lat_min, lon_max, lat_max) in WGS84.
-# ~0.10 deg square ~= 10.5 x 11.1 km on the ground.
+# Chiang Mai province, Thailand. (lon_min, lat_min, lon_max, lat_max) in WGS84.
+# ~1.4 x 3.0 deg (~150 x 335 km) — spans 4 WorldCover 3-deg tiles (mosaicked).
 BBOX: tuple[float, float, float, float] = (
-    float(os.getenv("BBOX_LON_MIN", 98.85)),
-    float(os.getenv("BBOX_LAT_MIN", 18.74)),
-    float(os.getenv("BBOX_LON_MAX", 98.95)),
-    float(os.getenv("BBOX_LAT_MAX", 18.84)),
+    float(os.getenv("BBOX_LON_MIN", 98.0)),
+    float(os.getenv("BBOX_LAT_MIN", 17.3)),
+    float(os.getenv("BBOX_LON_MAX", 99.4)),
+    float(os.getenv("BBOX_LAT_MAX", 20.35)),
 )
 
-AREA_NAME = os.getenv("AREA_NAME", "Doi Suthep, Chiang Mai")
+AREA_NAME = os.getenv("AREA_NAME", "Chiang Mai province")
 
-# Target ground resolution of one grid cell, metres. The user picked ~100 m,
-# giving roughly a 111 x 105 grid for the default bbox.
-CELL_SIZE_M: float = float(os.getenv("CELL_SIZE_M", 100.0))
+# Target ground resolution of one grid cell, metres. ~1 km over the province
+# gives a ~340 x 148 grid (~50k cells) that the CA can still run in reasonable
+# time on a small free-tier instance.
+CELL_SIZE_M: float = float(os.getenv("CELL_SIZE_M", 1000.0))
+
+# DEM tile zoom (Terrarium). Coarser zoom = far fewer tiles for a large area.
+# z10 ~= 150 m/px, plenty for a ~1 km grid.
+TERRAIN_ZOOM: int = int(os.getenv("TERRAIN_ZOOM", 10))
 
 _M_PER_DEG_LAT = 111_320.0  # metres per degree latitude (good enough near 19N)
 
@@ -82,7 +87,9 @@ MAX_N_STEPS = int(os.getenv("MAX_N_STEPS", 150))
 # --- assets to protect (used by the recommender) ---------------------------
 # Communities / key points inside the bbox. Edit freely; coordinates are WGS84.
 ASSETS: list[dict] = [
-    {"name": "Wat Phra That Doi Suthep", "lat": 18.8048, "lon": 98.9217},
-    {"name": "Doi Pui Hmong Village", "lat": 18.7950, "lon": 98.8950},
-    {"name": "Mae Hia foothill community", "lat": 18.7550, "lon": 98.9200},
+    {"name": "เมืองเชียงใหม่", "lat": 18.7900, "lon": 98.9800},
+    {"name": "ดอยสุเทพ", "lat": 18.8048, "lon": 98.9217},
+    {"name": "ฝาง", "lat": 19.9200, "lon": 99.2100},
+    {"name": "จอมทอง", "lat": 18.4200, "lon": 98.6700},
+    {"name": "ดอยอินทนนท์", "lat": 18.5880, "lon": 98.4870},
 ]

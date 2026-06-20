@@ -102,17 +102,20 @@ def _sample_to_grid(grid: Grid, mosaic: np.ndarray, px0: int, py0: int, z: int) 
     return top * (1 - fy) + bot * fy
 
 
-def get_terrain(grid: Grid, *, force_refresh: bool = False, zoom: int = _ZOOM) -> dict:
+def get_terrain(grid: Grid, *, force_refresh: bool = False, zoom: int | None = None) -> dict:
     """Return {elevation, slope_deg, aspect_deg} on the master grid (n_rows,n_cols).
 
     Cached as a single ``.npy`` so repeat calls (and offline demos) are instant.
-    ``zoom`` defaults to 12 (good for the ~100 m app grid); a coarser zoom (e.g.
-    10) is handy for a larger ML training region with far fewer tiles.
+    ``zoom`` defaults to ``config.TERRAIN_ZOOM``; pass a value to override (the ML
+    scripts use a coarser zoom for very large regions with far fewer tiles).
     """
     if config.DATA_MODE == "mock":
         from backend.data import mock
 
         return mock.mock_terrain(grid)
+
+    if zoom is None:
+        zoom = config.TERRAIN_ZOOM
 
     cache = config.CACHE_DIR / f"terrain_{grid.n_rows}x{grid.n_cols}_z{zoom}.npy"
     if cache.exists() and not force_refresh:
