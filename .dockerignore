@@ -1,0 +1,16 @@
+# Keep build contexts small & reproducible.
+**/__pycache__
+**/*.pyc
+.venv
+.pytest_cache
+backend/cache/*
+!backend/cache/risk_model.joblib
+!backend/cache/national_risk.npy
+!backend/cache/national_meta.json
+scripts/out
+**/node_modules
+frontend/dist
+.git
+.gitignore
+*.md
+.env

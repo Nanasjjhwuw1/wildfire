@@ -1,0 +1,16 @@
+# Render blueprint: one web service (Docker) that serves the API + the frontend.
+# Render builds the Docker image in its cloud — no local Docker needed.
+# Deploy: push this repo to GitHub, then Render → New → Blueprint → pick the repo.
+services:
+  - type: web
+    name: wildfire
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATA_MODE
+        value: real
+      # Optional: add your NASA FIRMS key to enable the historical-hotspot toggle.
+      - key: FIRMS_API_KEY
+        sync: false

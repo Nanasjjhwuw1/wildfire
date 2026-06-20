@@ -1,0 +1,9 @@
+{
+  "_comment": "Copy to vercel.json and replace the destination host with your Render backend URL. This proxies the app's relative /api calls to the backend so everything stays same-origin.",
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://YOUR-BACKEND.onrender.com/api/:path*"
+    }
+  ]
+}

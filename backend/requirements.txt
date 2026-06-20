@@ -1,0 +1,21 @@
+# Backend dependencies (installed inside the Docker image / Linux).
+#
+# Slice 1 (CA engine + demo + tests) needs ONLY these three, which have
+# Windows wheels for Python 3.14 so they run natively for local dev:
+numpy>=1.26
+matplotlib>=3.8
+pytest>=8.0
+
+# Added in later slices. rasterio / rioxarray pull in GDAL and are intended to
+# run inside the Linux Docker image (python:3.11) where wheels are reliable.
+scipy>=1.11
+scikit-learn>=1.4    # ML fire-susceptibility model (trained on historical FIRMS)
+joblib>=1.3          # persist the trained model
+fastapi>=0.110
+uvicorn[standard]>=0.29
+requests>=2.31
+python-dotenv>=1.0
+Pillow>=10.0
+httpx>=0.27          # FastAPI TestClient for the API smoke tests
+rasterio>=1.3        # DEM + WorldCover windowed reads (Docker/Linux)
+rioxarray>=0.15
