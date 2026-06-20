@@ -12,6 +12,9 @@ backend/cache/*
 !backend/cache/risk_model.joblib
 !backend/cache/national_risk.npy
 !backend/cache/national_meta.json
+!backend/cache/terrain_111x105_z12.npy
+!backend/cache/landcover_111x105.npy
+!backend/cache/weather.json
 scripts/out/
 
 # Frontend

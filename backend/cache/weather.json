@@ -1,0 +1,63 @@
+{
+  "fetched_at": 1781954731.0238912,
+  "source": "open-meteo",
+  "representative": {
+    "temp": 25.940000000000005,
+    "rh": 85.6,
+    "wind_speed": 0.66,
+    "wind_dir": 338.4,
+    "rain_24h": 4.24
+  },
+  "points": [
+    {
+      "lat": 18.87522,
+      "lon": 98.85827,
+      "temp": 23.1,
+      "rh": 94,
+      "wind_speed": 0.22,
+      "wind_dir": 207,
+      "precip_now": 0.0,
+      "rain_24h": 5.6
+    },
+    {
+      "lat": 18.80492,
+      "lon": 98.93805,
+      "temp": 28.1,
+      "rh": 79,
+      "wind_speed": 0.74,
+      "wind_dir": 20,
+      "precip_now": 0.0,
+      "rain_24h": 3.4
+    },
+    {
+      "lat": 18.734621,
+      "lon": 98.84086,
+      "temp": 26.1,
+      "rh": 88,
+      "wind_speed": 1.25,
+      "wind_dir": 331,
+      "precip_now": 0.0,
+      "rain_24h": 2.9000000000000004
+    },
+    {
+      "lat": 18.734621,
+      "lon": 98.92927,
+      "temp": 28.9,
+      "rh": 75,
+      "wind_speed": 1.23,
+      "wind_dir": 348,
+      "precip_now": 0.0,
+      "rain_24h": 4.7
+    },
+    {
+      "lat": 18.80492,
+      "lon": 98.849556,
+      "temp": 23.5,
+      "rh": 92,
+      "wind_speed": 0.56,
+      "wind_dir": 297,
+      "precip_now": 0.0,
+      "rain_24h": 4.6
+    }
+  ]
+}
