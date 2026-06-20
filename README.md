@@ -1,3 +1,13 @@
+---
+title: Wildfire Risk & Spread
+emoji: 🔥
+colorFrom: red
+colorTo: yellow
+sdk: docker
+app_port: 8000
+pinned: false
+---
+
 # 🔥 Wildfire Risk & Spread — Doi Suthep MVP
 
 An interactive web app that, for one real area (Doi Suthep, Chiang Mai — configurable),
