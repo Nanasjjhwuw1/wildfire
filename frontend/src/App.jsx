@@ -4,7 +4,7 @@ import Legend from './components/Legend.jsx'
 import * as api from './api.js'
 import {
   makeT, r0, r1, pct0, dangerInfo, windPhrase, windWord, drynessWord,
-  chanceWord, dirWord, dirArrow, bearingDeg, nearestAsset, formatDuration,
+  chanceWord, dirWord, dirArrow, bearingDeg, nearestAsset, formatDuration, compactNum,
 } from './i18n.js'
 
 function Info({ text }) {
@@ -271,6 +271,9 @@ export default function App() {
                     <div className="result-card">
                       <div className="example-tag">{t('exampleNote')}</div>
                       {summarySentence() && <div className="summary big">{summarySentence()}</div>}
+                      {sim.emissions && (
+                        <div className="big-line co2">🌫️ {t('co2Emitted')} ~{compactNum(sim.emissions.co2_tonnes, lang)} {t('co2Unit')} (≈ {compactNum(sim.emissions.car_years_equiv, lang)} {t('carUnit')})</div>
+                      )}
                       {rec && rec.summary.assets_threatened > 0 && (
                         <div className="big-line">🚒 {t('sendCrews')} {rec.summary.n_suppression_zones} จุด</div>
                       )}
@@ -348,6 +351,12 @@ export default function App() {
                   <div className="stat-row"><span>{t('ignitionPoint')}</span><b>{r1(sim.ignition.lat)}, {r1(sim.ignition.lon)}</b></div>
                   <div className="stat-row"><span>{t('spreadTimeTotal')}</span><b>~{formatDuration(totalMin, lang)} ({t('approx')})</b></div>
                   <div className="stat-row"><span>{t('windUsed')}</span><b>{windWord(sim.wind.speed, lang)} {dirWord(sim.wind.direction, lang)} ({sim.wind.source === 'user' ? t('youSet') : t('liveVal')})</b></div>
+                  {sim.emissions && <>
+                    <div className="stat-row co2"><span>🌫️ {t('co2Emitted')}</span><b>~{compactNum(sim.emissions.co2_tonnes, lang)} {t('co2Unit')}</b></div>
+                    <div className="stat-row"><span>{t('burnedAreaEst')}</span><b>~{compactNum(sim.emissions.burned_area_rai, lang)} {t('raiUnit')}</b></div>
+                    <div className="stat-row"><span>{t('carEquiv')}</span><b>~{compactNum(sim.emissions.car_years_equiv, lang)} {t('carUnit')}</b></div>
+                    <div className="co2-note">{t('co2Note')}</div>
+                  </>}
                   <div className="btn-row" style={{ marginTop: 8 }}>
                     <button className="btn secondary" onClick={() => { setFrameIdx(0); setPlaying(true) }}>{t('btnPlay')}</button>
                     <button className="btn secondary" onClick={() => setPlaying(false)}>{t('btnPause')}</button>

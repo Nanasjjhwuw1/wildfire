@@ -52,6 +52,16 @@ const STR = {
   spreadTimeTotal: { th: 'เวลาลามทั้งหมด', en: 'Total spread time' },
   assumedRos: { th: 'อัตราการลามสมมติ (ม./นาที)', en: 'Assumed spread rate (m/min)' },
   approx: { th: 'ประมาณ', en: 'approx.' },
+  co2Emitted: { th: 'ปล่อยคาร์บอน (CO₂)', en: 'CO₂ emitted' },
+  co2Unit: { th: 'ตัน', en: 't' },
+  burnedAreaEst: { th: 'พื้นที่ไหม้ (ประมาณ)', en: 'Burned area (est.)' },
+  raiUnit: { th: 'ไร่', en: 'rai' },
+  carEquiv: { th: 'เทียบเท่าควันรถ', en: 'Same as cars' },
+  carUnit: { th: 'คัน/ปี', en: 'cars/yr' },
+  co2Note: {
+    th: 'ประมาณการกรณีไฟลามอิสระจนสุด (ยังไม่ถูกดับ) · ป่าไหม้ปล่อย ~19 ตัน CO₂/เฮกตาร์ (IPCC)',
+    en: 'Estimate, free-burning if unsuppressed · forest ≈19 t CO₂/ha (IPCC)',
+  },
 
   assetsThreatened: { th: 'ชุมชนที่เสี่ยง', en: 'Communities at risk' },
   places: { th: 'แห่ง', en: '' },
@@ -188,6 +198,17 @@ export function formatDuration(min, lang) {
   const m = Math.round(min % 60)
   if (t) return `${h} ชม.${m ? ` ${m} นาที` : ''}`
   return `${h} h${m ? ` ${m} min` : ''}`
+}
+
+// Compact big numbers: 5_712_713 -> "5.7 ล้าน" / "5.7M"; smaller -> "12,300".
+export function compactNum(n, lang) {
+  n = Math.round(Number(n) || 0)
+  const t = lang === 'th'
+  if (n >= 1e6) {
+    const v = n / 1e6
+    return String(v >= 100 ? Math.round(v) : v.toFixed(1)).replace(/\.0$/, '') + (t ? ' ล้าน' : 'M')
+  }
+  return n.toLocaleString('en-US')
 }
 
 // ---- danger class ----------------------------------------------------------

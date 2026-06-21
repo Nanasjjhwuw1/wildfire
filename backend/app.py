@@ -33,6 +33,7 @@ from backend.data import aoi as aoi_mod
 from backend.data import firms as firms_mod
 from backend.data import weather as weather_mod
 from backend.data.grid import Grid
+from backend.models.emissions import estimate_emissions
 from backend.models.recommend import recommend as build_recommendation
 from backend.models.risk_fwi import compute_risk, ffmc, moisture_factor_from_ffmc
 from backend.models.spread_ca import CAParams, simulate_montecarlo
@@ -191,7 +192,12 @@ def simulate(req: SimRequest):
     )
     burn_prob = out["burn_prob"]
     frames = out["frames"]
-    clip = fuel["nonflammable"] | get_outside()  # hide non-fuel + outside-province
+    outside = get_outside()
+    clip = fuel["nonflammable"] | outside  # hide non-fuel + outside-province
+
+    emissions = estimate_emissions(
+        burn_prob, fuel["landcover"], GRID.cell_width_m * GRID.cell_height_m, inside=~outside
+    )
 
     # subsample frames so the animation payload stays small (<= ~30 frames)
     stride = max(1, int(np.ceil(req.n_steps / 30)))
@@ -230,6 +236,7 @@ def simulate(req: SimRequest):
             "burned_fraction": round(float(burn_prob[flammable].mean()), 4),
             "max_burn_prob": round(float(burn_prob.max()), 3),
         },
+        "emissions": emissions,
     }
 
 
