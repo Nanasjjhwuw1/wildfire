@@ -12,6 +12,7 @@ export default function MapView({
   recommendation, showRec, lang = 'th', onClick,
   riskMlImage, showRiskMl,
   nationalImage, nationalBounds, showNational,
+  aoiGeojson,
 }) {
   const elRef = useRef(null)
   const mapRef = useRef(null)
@@ -59,15 +60,21 @@ export default function MapView({
     }
   }, [JSON.stringify(bounds)])
 
-  // dashed outline of the study area so users know where they can ignite
+  // outline the study area: real province border when available, else the bbox
   useEffect(() => {
     const map = mapRef.current
     if (!map || !bounds) return
     if (lyr.current.aoi) { map.removeLayer(lyr.current.aoi); lyr.current.aoi = null }
-    lyr.current.aoi = L.rectangle(L.latLngBounds(bounds), {
-      color: '#ffd166', weight: 2, fill: false, dashArray: '6 6', interactive: false,
-    }).addTo(map)
-  }, [JSON.stringify(bounds)])
+    if (aoiGeojson) {
+      lyr.current.aoi = L.geoJSON(aoiGeojson, {
+        style: { color: '#ffd166', weight: 2, fill: false, interactive: false },
+      }).addTo(map)
+    } else {
+      lyr.current.aoi = L.rectangle(L.latLngBounds(bounds), {
+        color: '#ffd166', weight: 2, fill: false, dashArray: '6 6', interactive: false,
+      }).addTo(map)
+    }
+  }, [JSON.stringify(bounds), aoiGeojson])
 
   // risk overlay
   useEffect(() => {

@@ -29,6 +29,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 from backend import config, render
+from backend.data import aoi as aoi_mod
 from backend.data import firms as firms_mod
 from backend.data import weather as weather_mod
 from backend.data.grid import Grid
@@ -46,8 +47,18 @@ app.add_middleware(
 
 GRID = Grid.from_config()
 _LAYER_CACHE: dict[str, dict] = {}   # keyed by DATA_MODE so tests (mock) stay isolated
+_OUTSIDE_CACHE: dict[str, np.ndarray] = {}  # province-clip mask, per data mode
 SIMS: dict[str, dict] = {}           # sim_id -> stored simulation (for /recommend)
 _MAX_SIMS = 25
+
+
+def get_outside() -> np.ndarray:
+    """Boolean grid (True = outside the province) for clipping overlays to the
+    real Chiang Mai boundary instead of the rectangular bbox."""
+    key = config.DATA_MODE
+    if key not in _OUTSIDE_CACHE:
+        _OUTSIDE_CACHE[key] = aoi_mod.outside_mask(GRID)
+    return _OUTSIDE_CACHE[key]
 
 
 # --------------------------------------------------------------------------
@@ -113,6 +124,7 @@ def area():
                     "fetched_at": wx.get("fetched_at")},
         "assets": config.ASSETS,
         "firms_enabled": bool(config.FIRMS_API_KEY),
+        "aoi_geojson": aoi_mod.province_geojson(),  # real province border (not the bbox)
     }
 
 
@@ -124,7 +136,8 @@ def risk():
     return {
         "bounds": GRID.leaflet_bounds(),
         "image": render.overlay_png(r["risk"], cmap="YlOrRd",
-                                    mask=layers["fuel"]["nonflammable"], hide_below=0.05),
+                                    mask=layers["fuel"]["nonflammable"] | get_outside(),
+                                    hide_below=0.05),
         "danger_class": r["danger_class"],
         "ffmc": r["ffmc_scalar"],
         "isi": r["isi_scalar"],
@@ -178,11 +191,12 @@ def simulate(req: SimRequest):
     )
     burn_prob = out["burn_prob"]
     frames = out["frames"]
+    clip = fuel["nonflammable"] | get_outside()  # hide non-fuel + outside-province
 
     # subsample frames so the animation payload stays small (<= ~30 frames)
     stride = max(1, int(np.ceil(req.n_steps / 30)))
     frame_urls = [
-        render.overlay_png(frames[t], cmap="inferno", mask=fuel["nonflammable"], hide_below=0.03)
+        render.overlay_png(frames[t], cmap="inferno", mask=clip, hide_below=0.03)
         for t in range(0, req.n_steps, stride)
     ]
 
@@ -210,7 +224,7 @@ def simulate(req: SimRequest):
         "n_runs": req.n_runs,
         "n_steps": req.n_steps,
         "burn_prob_image": render.overlay_png(burn_prob, cmap="inferno",
-                                              mask=fuel["nonflammable"], hide_below=0.03),
+                                              mask=clip, hide_below=0.03),
         "frames": frame_urls,
         "stats": {
             "burned_fraction": round(float(burn_prob[flammable].mean()), 4),
@@ -256,7 +270,8 @@ def risk_ml():
     return {
         "bounds": GRID.leaflet_bounds(),
         "image": render.overlay_png(out["risk"], cmap="cool",
-                                    mask=layers["fuel"]["nonflammable"], hide_below=0.05),
+                                    mask=layers["fuel"]["nonflammable"] | get_outside(),
+                                    hide_below=0.05),
         "metrics": out["metrics"],
         "feature_names": out["feature_names"],
         "trained": True,

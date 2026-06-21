@@ -238,6 +238,7 @@ export default function App() {
             recommendation={rec} showRec={showRec} lang={lang} onClick={handleClick}
             riskMlImage={riskMl?.image} showRiskMl={baseLayer === 'ai' && !!riskMl}
             nationalImage={national?.image} nationalBounds={national?.bounds} showNational={showNational}
+            aoiGeojson={area?.aoi_geojson}
           />
           {!ignition && !showNational && <div className="map-hint">{t('mapHintFirst')}</div>}
           <div className="north-arrow" title="North"><b>↑</b>N</div>

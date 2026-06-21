@@ -23,12 +23,15 @@ except Exception:  # pragma: no cover - dotenv not installed yet during Slice 1
 
 # --- study area ------------------------------------------------------------
 # Chiang Mai province, Thailand. (lon_min, lat_min, lon_max, lat_max) in WGS84.
-# ~1.4 x 3.0 deg (~150 x 335 km) — spans 4 WorldCover 3-deg tiles (mosaicked).
+# Tightly encloses the real province polygon (lon 98.08-99.59, lat 17.25-20.15,
+# see backend/assets/chiangmai.geojson) with a small margin so the province's
+# eastern arm isn't clipped. Overlays are masked to the polygon at render time
+# (see backend/data/aoi.py). Spans 4 WorldCover 3-deg tiles (mosaicked).
 BBOX: tuple[float, float, float, float] = (
     float(os.getenv("BBOX_LON_MIN", 98.0)),
-    float(os.getenv("BBOX_LAT_MIN", 17.3)),
-    float(os.getenv("BBOX_LON_MAX", 99.4)),
-    float(os.getenv("BBOX_LAT_MAX", 20.35)),
+    float(os.getenv("BBOX_LAT_MIN", 17.2)),
+    float(os.getenv("BBOX_LON_MAX", 99.65)),
+    float(os.getenv("BBOX_LAT_MAX", 20.2)),
 )
 
 AREA_NAME = os.getenv("AREA_NAME", "Chiang Mai province")
