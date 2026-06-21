@@ -96,6 +96,7 @@ body {
 .stat-row.deep { opacity: .9; font-size: 12px; border-left: 2px solid var(--border); padding-left: 8px; }
 .stat-row.co2 b { color: #6cb6d6; font-weight: 700; }
 .big-line.co2 { font-weight: 600; background: rgba(108,182,214,.12); border: 1px solid rgba(108,182,214,.4); border-radius: 10px; padding: 10px 12px; }
+.co2-sub { font-size: 13px; font-weight: 400; color: var(--muted); margin-top: 4px; }
 .co2-note { font-size: 11px; color: var(--muted); line-height: 1.45; margin: 2px 0 8px; }
 
 .summary {

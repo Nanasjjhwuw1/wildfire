@@ -272,7 +272,10 @@ export default function App() {
                       <div className="example-tag">{t('exampleNote')}</div>
                       {summarySentence() && <div className="summary big">{summarySentence()}</div>}
                       {sim.emissions && (
-                        <div className="big-line co2">🌫️ {t('co2Emitted')} ~{compactNum(sim.emissions.co2_tonnes, lang)} {t('co2Unit')} (≈ {compactNum(sim.emissions.car_years_equiv, lang)} {t('carUnit')})</div>
+                        <div className="big-line co2">
+                          🌫️ {t('co2Emitted')} ~{compactNum(sim.emissions.co2_tonnes, lang)} {t('co2Unit')}
+                          <div className="co2-sub">{t('co2LikePre')} {compactNum(sim.emissions.car_years_equiv, lang)} {t('co2LikeSuf')}</div>
+                        </div>
                       )}
                       {rec && rec.summary.assets_threatened > 0 && (
                         <div className="big-line">🚒 {t('sendCrews')} {rec.summary.n_suppression_zones} จุด</div>

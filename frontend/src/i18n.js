@@ -56,8 +56,10 @@ const STR = {
   co2Unit: { th: 'ตัน', en: 't' },
   burnedAreaEst: { th: 'พื้นที่ไหม้ (ประมาณ)', en: 'Burned area (est.)' },
   raiUnit: { th: 'ไร่', en: 'rai' },
-  carEquiv: { th: 'เทียบเท่าควันรถ', en: 'Same as cars' },
-  carUnit: { th: 'คัน/ปี', en: 'cars/yr' },
+  carEquiv: { th: 'เทียบเท่ารถยนต์ขับ 1 ปี', en: 'Like cars driven 1 yr' },
+  carUnit: { th: 'คัน', en: 'cars' },
+  co2LikePre: { th: '≈ พอ ๆ กับควันรถยนต์', en: '≈ about the same as' },
+  co2LikeSuf: { th: 'คัน ขับนานทั้งปี', en: 'cars driven for a whole year' },
   co2Note: {
     th: 'ประมาณการกรณีไฟลามอิสระจนสุด (ยังไม่ถูกดับ) · ป่าไหม้ปล่อย ~19 ตัน CO₂/เฮกตาร์ (IPCC)',
     en: 'Estimate, free-burning if unsuppressed · forest ≈19 t CO₂/ha (IPCC)',
